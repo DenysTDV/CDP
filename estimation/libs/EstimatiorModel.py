@@ -2,6 +2,8 @@ import datetime
 from libs.BaseClass import BaseClass
 from libs.UNet import *
 from libs.Discriminators import ClassicalDiscriminator
+from tensorflow import keras
+import tensorflow as tf
 
 # ======================================================================================================================
 
@@ -37,7 +39,7 @@ class TemplateEstimatior(BaseClass):
 
         # --- init Models -------
         self.UnetModel = UNet(filters=self.config.models["unet"]["filters"],
-                                  output_channels=self.config.models["unet"]["output_channels"],
+                                  output_channels=1,
                                   layer_normalisation=self.__layer_normalisation).init(input)
         self.Discriminator = ClassicalDiscriminator(filters=self.config.models["ClassicalDiscriminator"]["filters"]).init(input_dt)
 

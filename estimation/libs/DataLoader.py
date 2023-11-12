@@ -77,18 +77,24 @@ class DataLoader(BaseDataLoader):
             self.n_batches = self._printed.shape[0]
             self.datagen = datagen.flow(x=self._printed, y=self._binary, batch_size=1, shuffle=False)
 
-    def _loadImages(self, args, inds):
+    def _loadImages(self, some_list, args, inds):
         self._indices = inds if not isinstance(inds, str) else self._loadIndices(inds)
-
+        print("asd")
         N = len(self._indices)
         if self.type == "train":
             k = self._getNumberofBlocks(args)
-
-            printed = np.zeros((k*N, (*args["target_size"])))
-            binary  = np.zeros((k*N, (*args["template_target_size"])))
+            printed_shape=(k*N, *args["target_size"])
+            printed = np.zeros(printed_shape)
+            print(printed_shape)
+            binary_shape = (k*N, *args["template_target_size"])
+            print(binary_shape)
+            binary  = np.zeros(binary_shape)
         else:
-            printed = np.zeros((N, (*args["expected_target_size"])))
-            binary  = np.zeros((N, (*args["expected_template_target_size"])))
+            shape=(N, *args["expected_target_size"])
+            printed = np.zeros(shape)
+            shape1=(N, *args["expected_template_target_size"])
+            print(shape, shape1)
+            binary  = np.zeros(shape1)
 
         i = -1
         for ind in self._indices:
@@ -126,7 +132,9 @@ class DataLoader(BaseDataLoader):
         s0 = args["expected_target_size"][0] - args["target_size"][0] + 1
         s1 = args["expected_target_size"][1] - args["target_size"][1] + 1
         step = args["augmentation_args"]["sub-block_step"]
-
+        print("expected_target_size",args["expected_target_size"][0])
+        print("expected_target_size1",args["expected_target_size"][1])
+        print(step)
         k0 = len(np.arange(0, s0, step))+1
         k1 = len(np.arange(0, s1, step))+1
 

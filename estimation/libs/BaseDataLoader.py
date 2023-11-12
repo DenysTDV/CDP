@@ -81,30 +81,31 @@ class BaseDataLoader(BaseClass):
 
     def _loadData(self, args):
 
-        list = os.listdir(self._binary_codes_path)
-        list.sort()
-
+        some_list = os.listdir(self._binary_codes_path)
+        some_list.sort()
         if self._seed >= 0:
-            args["train_indices"], args["validation_indices"], args["test_indices"] = self._getIndices(len(list), args)
-
+            args["train_indices"], args["validation_indices"], args["test_indices"] = self._getIndices(len(some_list), args)
+        print()
         if self.type == "train":
-            self._printed, self._binary = self._loadImages(list, args, args["train_indices"])
+            self._printed, self._binary = self._loadImages(some_list, args, args["train_indices"])
             # train data augmentation
             if args["augmentation"]:
                 self._augmentTrainData(args["augmentation_args"])
         elif self.type == "validation":
-            self._printed, self._binary = self._loadImages(list, args, args["validation_indices"])
+            self._printed, self._binary = self._loadImages(some_list, args, args["validation_indices"])
         elif self.type == "test":
-            self._printed, self._binary = self._loadImages(list, args, args["test_indices"])
+            self._printed, self._binary = self._loadImages(some_list, args, args["test_indices"])
         elif self.type == "trainx": # to regenerate train codes as well, to have a full dataset
-            self._printed, self._binary = self._loadImages(list, args, args["train_indices"])
+            self._printed, self._binary = self._loadImages(some_list, args, args["train_indices"])
 
-    def _loadImages(self, list, args, inds):
+    def _loadImages(self, some_list, args, inds):
         self._indices = inds if not isinstance(inds, str) else self._loadIndices(inds)
-
+        print("not asd")
         N = len(self._indices)
-        printed = np.zeros((N, (*args["target_size"])))
-        binary  = np.zeros((N, (*args["template_target_size"])))
+        shape=(N, *args["target_size"])
+        shape1 = (N, *args["template_target_size"])
+        printed = np.zeros(shape)
+        binary  = np.zeros(shape1)
 
         i = -1
         for ind in self._indices:

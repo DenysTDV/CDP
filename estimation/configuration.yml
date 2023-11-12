@@ -26,9 +26,9 @@ dataset:
   dataset_name: Indigo 1x1 base
   args:
     symbol_size:
-    templates_path: ./data/HP55/density_50/binary/
-    printed_path: ./data/HP55/density_50/original/
-
+    templates_path: ./original/
+    printed_path: ./printed/
+    seed: 20
     bad_indices: [5]
 
     # sub-block train image, if case,
@@ -38,11 +38,11 @@ dataset:
     target_size: [256, 256, 1]
 
     # full size image: test
-    expected_template_target_size: [1520, 1520]
-    expected_target_size:  [1520, 1520, 1]
+    expected_template_target_size: [50, 50]
+    expected_target_size:  [50, 50, 1]
 
     synchronize_with_template: False
-    is_stochastic: False
+    is_stochastic: True
     noise_std: 0.05
     augmentation: True
     augmentation_args:

@@ -20,9 +20,10 @@ parser.add_argument("--config_path", default="./configuration.yml", type=str, he
 parser.add_argument("--type", default="Dtt_Dt", type=str, help="The model estimator configuration")
 parser.add_argument("--lr", default=1e-4, type=float, help="Training learning rate")
 parser.add_argument("--epochs", default=100, type=int, help="Number of training epochs")
-parser.add_argument("--is_stochastic", default=True, type=int, help="Is to train the stochastic or deterministic model")
+parser.add_argument("--is_stochastic", default=True, type=bool, help="Is to train the stochastic or deterministic model")
 # log mode
-parser.add_argument("--is_debug", default=True, type=int, help="Is debug mode?")
+parser.add_argument("--is_debug", default=True, type=bool, help="Is debug mode?")
+parser.add_argument("--seed", default=20, type=int, help="Number of seed")
 
 args = parser.parse_args()
 # ======================================================================================================================
@@ -33,8 +34,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 # ======================================================================================================================
 def train():
-
-    config = yaml_utils.Config(yaml.load(open(args.config_path)))
+    log.warn(args)
+    config = yaml_utils.Config(yaml.load(open(args.config_path), Loader=yaml.FullLoader))
     args.checkpoint_dir = "%s" % args.type
     args.dir = "%s" % args.type
 
@@ -45,7 +46,7 @@ def train():
 
     # --- Data set -----------
     log.info("Start Train Data loading.....")
-    DataGen = DataLoader(config, args, type="train", is_debug_mode=args.is_debug)
+    DataGen = DataLoader(config, args, type="train", is_debug_mode=False)
 
     # === Training =================================================================================================
     for epoch in range(args.epochs):
@@ -54,7 +55,7 @@ def train():
         batches = 0
         save_each = saveSpeed(epoch)
         for x_batch, y_batch in DataGen.datagen:
-            if config["dataset"]["args"]["is_stochastic"]:
+            if config["dataset"]["args"]["is_stochastic"] == True:
                 noise = np.random.normal(0, config["dataset"]["args"]["noise_std"], x_batch.size)
                 x_batch += noise.reshape(x_batch.shape)
 
