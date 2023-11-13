@@ -24,7 +24,7 @@ parser.add_argument("--is_stochastic", default=True, type=bool, help="Is to trai
 # log mode
 parser.add_argument("--is_debug", default=True, type=bool, help="Is debug mode?")
 parser.add_argument("--seed", default=20, type=int, help="Number of seed")
-
+parser.add_argument("--file_template", default="Scan000", type = str)
 args = parser.parse_args()
 # ======================================================================================================================
 set_log_config(args.is_debug)
@@ -48,8 +48,10 @@ def train():
     log.info("Start Train Data loading.....")
     DataGen = DataLoader(config, args, type="train", is_debug_mode=False)
 
+    print("Data loaded")
     # === Training =================================================================================================
     for epoch in range(args.epochs):
+        print("new epoch", epoch)
         Loss = []
         Loss_dt  = []
         batches = 0

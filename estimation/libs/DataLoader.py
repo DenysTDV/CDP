@@ -21,7 +21,7 @@ class DataLoader(BaseDataLoader):
         self._seed = args.seed if "seed" in args else -1
         self._indices = []
         self.file_names = []
-        self._code_name = args.code_name if "code_name" in args else "%04d.png"
+        self._code_name = args.code_name if "code_name" in args else "Scan%05d.tif"
 
         self._rows = []
         self._cols = []
@@ -101,13 +101,22 @@ class DataLoader(BaseDataLoader):
             self.file_names.append(self._code_name % ind)
             image_x = skimage.io.imread(self._printed_codes_path + "/" + self._code_name % ind).astype(np.float64)
             if len(image_x.shape) < len(args["target_size"]):
+                print("x shape less then target")
                 image_x = image_x.reshape((image_x.shape[0], image_x.shape[1], 1))
             image_y = skimage.io.imread(self._binary_codes_path + "/" + self._code_name % ind).astype(np.float64)
-
-            image_x = self.normaliseDynamicRange(image_x, args)
-            image_y = self.normaliseDynamicRange(image_y, args)
-
+            print()
+            print(image_x)
+            print(image_y)
+            image_x = self.normaliseDynamicRange(image_x)
+            image_y = self.normaliseDynamicRange(image_y)
+            print("after normalise")
+            print(image_x)
+            print(image_y)
             if self.type == "train":
+                print("rows", self._rows)
+                print("cols", self._cols)
+                print("block_size", args["target_size"])
+                print("step", args["augmentation_args"]["sub-block_step"])
                 x_blocks = image2Blocks(image_x,
                                         args["target_size"],
                                         args["augmentation_args"]["sub-block_step"],
@@ -125,7 +134,8 @@ class DataLoader(BaseDataLoader):
                 i += 1
                 printed[i] = image_x
                 binary[i] = image_y
-
+        print("printed", printed)
+        print("binary", binary)
         return printed, binary
 
     def _getNumberofBlocks(self, args):

@@ -33,13 +33,13 @@ dataset:
 
     # sub-block train image, if case,
     # if no, put it to be equal to the full size
-    template_target_size: [256, 256]
+    template_target_size: [400, 400]
     template_target_channels: []  # 0 < negative & gamma correction; 0 = original; > 0 = gamma correction coef.
-    target_size: [256, 256, 1]
+    target_size: [400, 400, 1]
 
     # full size image: test
-    expected_template_target_size: [50, 50]
-    expected_target_size:  [50, 50, 1]
+    expected_template_target_size: [400, 400]
+    expected_target_size:  [400, 400, 1]
 
     synchronize_with_template: False
     is_stochastic: True
@@ -48,7 +48,7 @@ dataset:
     augmentation_args:
       first_order: [] #["gamma"] # ["rotation"]
       second_order: [] #["flip"]
-      sub-block_step: 256
+      sub-block_step: 128
       rotation_angles: [90, 180, 270]
       flip: [0, 1] # ["horizontal", "vertical"]
       gamma:  [0.3, 0.6, 0.3] # [start, end, step]

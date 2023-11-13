@@ -38,12 +38,14 @@ class TemplateEstimatior(BaseClass):
                                 self.config["dataset"]["args"]["target_size"][2]))
 
         # --- init Models -------
+        print("UNet")
         self.UnetModel = UNet(filters=self.config.models["unet"]["filters"],
                                   output_channels=1,
                                   layer_normalisation=self.__layer_normalisation).init(input)
         self.Discriminator = ClassicalDiscriminator(filters=self.config.models["ClassicalDiscriminator"]["filters"]).init(input_dt)
 
         # --- DiscriminatorModel -------
+        print("DiscriminatorModel")
         optimizer_discr = self.__getOptimizer(self.config.models["ClassicalDiscriminator"]["optimizer"], self.config.models["ClassicalDiscriminator"]["lr"])
         loss_discr = self.__getLoss(self.config.models["ClassicalDiscriminator"]["loss"])
 
@@ -52,6 +54,7 @@ class TemplateEstimatior(BaseClass):
         self.Discriminator.trainable = False
 
         # --- Nested estimator -------
+        print("Nested estimator")
         optimizer = self.__getOptimizer(self.config.models["unet"]["optimizer"], self.config.models["unet"]["lr"])
         loss = self.__getLoss(self.config.models["unet"]["loss"])
 

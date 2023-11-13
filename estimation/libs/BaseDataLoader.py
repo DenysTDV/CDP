@@ -112,6 +112,8 @@ class BaseDataLoader(BaseClass):
             self.file_names.append(self._code_name % ind)
             i += 1
             # load data
+            print("code names")
+            print(self._code_name)
             image_x = skimage.io.imread(self._printed_codes_path + "/" + self._code_name % ind).astype(np.float64)
             if len(image_x.shape) < len(args["target_size"]):
                 image_x = image_x.reshape((image_x.shape[0], image_x.shape[1], 1))
